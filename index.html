@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G9-L02 Homework · Jobs &amp; Origins (Polina)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wine:#5C1E2E; --wine-dark:#421420; --wine-soft:#EAD9DD;
+  --gold:#B8873A; --gold-light:#E3C377; --gold-soft:#F1E4C6;
+  --bg:#F3E8E2; --card:#FDF9F6; --card-deep:#F7F0EB;
+  --ink:#221F1D; --muted:#756963; --line:#E4D8D1;
+  --teach:#F0E4CF; --teach-line:#C6A96E;
+  --green:#3D6B52; --greensoft:#E1EBE4;
+  --red:#9B2E22; --redsoft:#F6DDD5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Manrope",system-ui,sans-serif;font-size:17px;line-height:1.58;min-height:100vh;display:flex;flex-direction:column}
+h1,h2,h3,.serif{font-family:"Lora",Georgia,serif;font-weight:600}
+
+.topbar{background:var(--wine);color:#fff;padding:14px 20px;position:sticky;top:0;z-index:50;box-shadow:0 4px 14px rgba(66,20,32,.18)}
+.topbar-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.badge{background:var(--gold);color:#fff;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.05em;text-transform:uppercase}
+.title-top{font-family:"Lora",serif;font-size:18px;font-weight:600}
+.dots{display:flex;gap:8px;align-items:center}
+.dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.32);cursor:pointer;transition:.2s;border:none;padding:0}
+.dot:hover{background:rgba(255,255,255,.7)}
+.dot.active{background:var(--gold-light);transform:scale(1.35)}
+.dot.done{background:#8FC7A7}
+.step-counter{font-size:13px;font-weight:700;color:var(--gold-light);margin-left:6px}
+
+.wrap{max-width:920px;width:100%;margin:24px auto 40px;padding:0 16px;flex:1}
+.screen{display:none;animation:fadeIn .26s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 8px 24px rgba(92,30,46,.05);margin-bottom:20px}
+.step-tag{display:inline-block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);background:var(--gold-soft);padding:4px 12px;border-radius:999px;margin-bottom:10px}
+h1{font-size:28px;color:var(--wine-dark);margin-bottom:8px;line-height:1.25}
+h2{font-size:21px;color:var(--wine);margin-bottom:10px}
+h3{font-size:18px;color:var(--wine-dark);margin-bottom:8px}
+p.lead{color:var(--muted);font-size:16px;margin-bottom:16px}
+
+.btn{background:var(--wine);color:#fff;border:none;border-radius:12px;padding:11px 20px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:.18s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:var(--wine-dark);transform:translateY(-1px)}
+.btn.gold{background:var(--gold)}
+.btn.gold:hover{background:#9d712d}
+.btn.soft{background:var(--wine-soft);color:var(--wine-dark)}
+.btn.soft:hover{background:#dfc6cc}
+.btn.outline{background:transparent;color:var(--wine);border:1.5px solid var(--wine)}
+.btn.outline:hover{background:var(--wine-soft)}
+.btn.sm{padding:7px 13px;font-size:13.5px;border-radius:9px}
+
+.rule-box{background:var(--teach);border-left:4px solid var(--gold);border-radius:12px;padding:15px 18px;margin:14px 0}
+.q-item{background:var(--card-deep);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;transition:.2s}
+.q-item.ok{background:var(--greensoft);border-color:var(--green)}
+.q-item.no{background:var(--redsoft);border-color:var(--red)}
+.q-text{font-weight:600;margin-bottom:10px}
+.opt-group{display:flex;flex-wrap:wrap;gap:8px}
+.opt-btn{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:7px 14px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;color:var(--ink);transition:.15s}
+.opt-btn:hover{border-color:var(--wine)}
+.opt-btn.picked-ok{background:var(--green);color:#fff;border-color:var(--green)}
+.opt-btn.picked-no{background:var(--red);color:#fff;border-color:var(--red)}
+.fb-line{margin-top:8px;font-size:14px;font-weight:700}
+.fb-line.ok{color:var(--green)}
+.fb-line.no{color:var(--red)}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.word-chip{background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;font-size:15px;font-weight:700;color:var(--wine-dark);cursor:pointer;transition:.16s;display:inline-flex;align-items:center;gap:6px}
+.word-chip:hover{border-color:var(--gold);background:var(--gold-soft)}
+
+.postcard{background:#fff;border:2px solid var(--teach-line);border-radius:16px;padding:20px 22px;margin:14px 0 18px;font-family:"Lora",serif;font-size:17.5px;line-height:1.7}
+.transcript-hidden{display:none}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.field input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:15px;background:#fff}
+.field input:focus{outline:none;border-color:var(--wine)}
+.script-preview{background:var(--teach);border:1.5px solid var(--teach-line);border-radius:16px;padding:18px 20px;font-family:"Lora",serif;font-size:17.5px;line-height:1.65;color:var(--wine-dark)}
+
+.stamp{display:none;margin-top:16px;padding:14px 24px;border:3px double var(--gold);background:var(--gold-soft);color:var(--wine-dark);font-family:"Lora",serif;font-size:21px;font-weight:700;border-radius:14px;text-align:center;animation:popIn .4s ease}
+.stamp.show{display:block}
+@keyframes popIn{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+
+.bottom-nav{background:var(--card);border-top:1px solid var(--line);padding:14px 20px;position:sticky;bottom:0;z-index:40}
+.bottom-inner{max-width:920px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.score-pill{font-size:14px;font-weight:700;color:var(--wine);background:var(--wine-soft);padding:6px 14px;border-radius:999px}
+
+.confetti{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:999;animation:fall 1.6s ease-out forwards}
+@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(420px) rotate(540deg);opacity:0}}
+
+@media(max-width:640px){.card{padding:20px}h1{font-size:24px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="badge">G9 · L02 HW</span>
+      <span class="title-top">Homework: Jobs &amp; Origins (Polina)</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="dots" id="progressDots"></div>
+      <span class="step-counter" id="stepCounter">1 / 6</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- TASK 1: VOCABULARY -->
+  <section class="screen active" data-step="1">
+    <div class="card">
+      <span class="step-tag">Task 1 · Vocabulary</span>
+      <h1>Who Has This Job?</h1>
+      <p class="lead">Read the clue and choose the right job word. Click 🔊 to hear the word!</p>
+      <div id="vocabQuiz"></div>
+    </div>
+  </section>
+
+  <!-- TASK 2: PRONUNCIATION -->
+  <section class="screen" data-step="2">
+    <div class="card">
+      <span class="step-tag">Task 2 · Pronunciation &amp; Ear Training</span>
+      <h1>Listen &amp; Repeat</h1>
+      <p class="lead">Click 🔊 to listen and choose the word you hear. Pay attention to soft <strong>-er / -or</strong> and tricky letters!</p>
+      <div id="pronQuiz"></div>
+
+      <div class="rule-box" style="margin-top:18px;">
+        <strong>Read Aloud Practice:</strong> Click to listen, then say each sentence aloud 2 times.
+        <div class="chip-row" style="flex-direction:column;align-items:stretch;">
+          <button class="word-chip" style="justify-content:flex-start;border-radius:12px;" onclick="speak('She is not a nurse. She is a doctor.', 0.85)">🔊 She isn't a nurse. She's a doctor.</button>
+          <button class="word-chip" style="justify-content:flex-start;border-radius:12px;" onclick="speak('My cousin is a pilot, and my aunt is a lawyer.', 0.85)">🔊 My cousin is a pilot, and my aunt is a lawyer.</button>
+          <button class="word-chip" style="justify-content:flex-start;border-radius:12px;" onclick="speak('Is he a scientist? Yes, he is.', 0.85)">🔊 Is he a scientist? Yes, he is.</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASK 3: GRAMMAR NEGATIVES -->
+  <section class="screen" data-step="3">
+    <div class="card">
+      <span class="step-tag">Task 3 · Grammar: Negatives (-)</span>
+      <h1>Make It Negative!</h1>
+      <p class="lead">Choose <strong>I'm not</strong>, <strong>isn't</strong>, or <strong>aren't</strong> to complete each sentence.</p>
+      <div id="negQuiz"></div>
+    </div>
+  </section>
+
+  <!-- TASK 4: GRAMMAR QUESTIONS & SHORT ANSWERS -->
+  <section class="screen" data-step="4">
+    <div class="card">
+      <span class="step-tag">Task 4 · Grammar: Questions &amp; Short Answers</span>
+      <h1>Ask &amp; Answer</h1>
+      <p class="lead">Remember the Golden Rule: never use a short form in a positive short answer (<strong>Yes, he is.</strong> — not <s>Yes, he's.</s>).</p>
+      <div id="qQuiz"></div>
+    </div>
+  </section>
+
+  <!-- TASK 5: LISTENING & READING POSTCARD -->
+  <section class="screen" data-step="5">
+    <div class="card">
+      <span class="step-tag">Task 5 · Listening &amp; Reading</span>
+      <h1>Mia's Note from Chicago</h1>
+      <p class="lead">Listen to Mia's short note first. Tap <strong>Show transcript</strong> if you want to read along, then answer True or False.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <button class="btn soft sm" onclick="speakPostcard(0.95)">🔊 Play Note</button>
+        <button class="btn soft sm" onclick="speakPostcard(0.75)">🐢 Slow</button>
+        <button class="btn outline sm" onclick="toggleTranscript('postcardText', this)">👁 Show transcript</button>
+      </div>
+
+      <div class="postcard transcript-hidden" id="postcardText">
+        Hi Polina! Today I am at a cozy café in Chicago with two new friends, Ben and Clara. Ben is from Canada. He isn't a waiter — he's a designer! Clara is from Spain. She isn't a student anymore; she is a scientist at a big lab. What about your friends?
+      </div>
+
+      <h3>True or False?</h3>
+      <div id="readQuiz"></div>
+    </div>
+  </section>
+
+  <!-- TASK 6: SPEAKING PREP CARD -->
+  <section class="screen" data-step="6">
+    <div class="card">
+      <span class="step-tag">Task 6 · Speaking Prep for Next Lesson</span>
+      <h1>My Two People</h1>
+      <p class="lead">Step 1: Write key words about 2 people you know (family or friends). Step 2: Practice speaking aloud using the prompts below!</p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Person 1 · Name</label>
+          <input type="text" placeholder="e.g. Olga">
+        </div>
+        <div class="field">
+          <label>Person 1 · City / Country</label>
+          <input type="text" placeholder="e.g. Irkutsk">
+        </div>
+        <div class="field">
+          <label>Person 1 · Their Job</label>
+          <input type="text" placeholder="e.g. teacher">
+        </div>
+        <div class="field">
+          <label>Person 1 · A Job They Are NOT</label>
+          <input type="text" placeholder="e.g. pilot">
+        </div>
+        <div class="field">
+          <label>Person 2 · Name</label>
+          <input type="text" placeholder="e.g. Max">
+        </div>
+        <div class="field">
+          <label>Person 2 · Their Job</label>
+          <input type="text" placeholder="e.g. manager">
+        </div>
+      </div>
+
+      <h3>Speaking Prompts (Say It Aloud!)</h3>
+      <div class="script-preview">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;padding:0;margin:0;">
+          <li>• <strong>Let me tell you about ...</strong></li>
+          <li>• <strong>He / She is from ...</strong></li>
+          <li>• <strong>He / She isn't a ... — he / she is a ...</strong></li>
+          <li>• <strong>My second person is ...</strong></li>
+          <li>• <strong>He / She is a ...</strong></li>
+        </ul>
+      </div>
+
+      <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+        <button class="btn gold" onclick="finishHomework()">★ Homework Complete! ★</button>
+      </div>
+
+      <div class="stamp" id="hwStamp">★ Great job, Polina! Homework G9-L02 Complete! ★</div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <div class="bottom-inner">
+    <button class="btn outline" id="prevBtn" onclick="go(-1)">← Previous</button>
+    <span class="score-pill" id="scorePill">Score: 0 / 24</span>
+    <button class="btn" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</nav>
+
+<script>
+const screens = [...document.querySelectorAll('.screen')];
+const totalSteps = screens.length;
+let cur = 1;
+let score = 0;
+const answered = new Set();
+
+function speak(text, rate = 0.95) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = rate;
+  window.speechSynthesis.speak(u);
+}
+
+function toggleTranscript(id, btn) {
+  const el = document.getElementById(id);
+  const hidden = el.classList.toggle('transcript-hidden');
+  btn.textContent = hidden ? '👁 Show transcript' : '🙈 Hide transcript';
+}
+
+function speakPostcard(rate) {
+  const txt = document.getElementById('postcardText').textContent.trim();
+  speak(txt, rate);
+}
+
+function buildDots() {
+  const d = document.getElementById('progressDots');
+  d.innerHTML = '';
+  for (let i = 1; i <= totalSteps; i++) {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === cur ? ' active' : i < cur ? ' done' : '');
+    b.onclick = () => showStep(i);
+    d.appendChild(b);
+  }
+}
+
+function showStep(n) {
+  cur = Math.max(1, Math.min(totalSteps, n));
+  screens.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === cur));
+  document.getElementById('stepCounter').textContent = `${cur} / ${totalSteps}`;
+  document.getElementById('prevBtn').style.visibility = cur === 1 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').style.visibility = cur === totalSteps ? 'hidden' : 'visible';
+  buildDots();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function go(delta) { showStep(cur + delta); }
+
+function renderQuiz(containerId, items, prefix) {
+  const box = document.getElementById(containerId);
+  box.innerHTML = '';
+  items.forEach((it, idx) => {
+    const qid = `${prefix}_${idx}`;
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    const audioBtn = it.audio
+      ? `<button class="btn soft sm" style="margin-right:8px;" onclick="speak('${it.audio.replace(/'/g, "\\'")}', 0.88)">🔊 Listen</button>`
+      : '';
+    div.innerHTML = `
+      <div class="q-text">${audioBtn}${it.q}</div>
+      <div class="opt-group"></div>
+      <div class="fb-line" id="fb_${qid}"></div>
+    `;
+    const og = div.querySelector('.opt-group');
+    it.opts.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        if (answered.has(qid)) return;
+        const fb = document.getElementById(`fb_${qid}`);
+        if (opt === it.a) {
+          answered.add(qid);
+          score++;
+          btn.classList.add('picked-ok');
+          div.classList.remove('no');
+          div.classList.add('ok');
+          fb.className = 'fb-line ok';
+          fb.textContent = '✓ Correct!';
+          document.getElementById('scorePill').textContent = `Score: ${score} / 24`;
+        } else {
+          btn.classList.add('picked-no');
+          div.classList.add('no');
+          fb.className = 'fb-line no';
+          fb.textContent = '✗ Try again!';
+        }
+      };
+      og.appendChild(btn);
+    });
+    box.appendChild(div);
+  });
+}
+
+// 1. Vocabulary (6 items)
+renderQuiz('vocabQuiz', [
+  { q: '✈️ A person who flies airplanes is a ...', opts: ['pilot', 'farmer', 'waiter'], a: 'pilot' },
+  { q: '🔬 A person who does experiments is a ...', opts: ['lawyer', 'scientist', 'DJ'], a: 'scientist' },
+  { q: '🎨 A creative person who designs clothes or apps is a ...', opts: ['manager', 'designer', 'nurse'], a: 'designer' },
+  { q: '☕ A person who serves coffee and food at a café is a ...', opts: ['waiter', 'teacher', 'doctor'], a: 'waiter' },
+  { q: '🩺 A person who cares for patients in a hospital is a ...', opts: ['student', 'nurse', 'farmer'], a: 'nurse' },
+  { q: '⚖️ A person who helps people with the law is a ...', opts: ['lawyer', 'pilot', 'DJ'], a: 'lawyer' }
+], 'v');
+
+// 2. Pronunciation (4 items)
+renderQuiz('pronQuiz', [
+  { q: 'Choose the word you hear:', audio: 'scientist', opts: ['student', 'scientist', 'designer'], a: 'scientist' },
+  { q: 'Choose the word you hear:', audio: 'lawyer', opts: ['lawyer', 'waiter', 'farmer'], a: 'lawyer' },
+  { q: 'Choose the word you hear:', audio: 'nurse', opts: ['doctor', 'nurse', 'manager'], a: 'nurse' },
+  { q: 'Choose the word you hear:', audio: 'pilot', opts: ['pilot', 'teacher', 'DJ'], a: 'pilot' }
+], 'p');
+
+// 3. Grammar Negatives (5 items)
+renderQuiz('negQuiz', [
+  { q: '1. I ___ from Canada. I am from Russia.', opts: ["I'm not", "isn't", "aren't"], a: "I'm not" },
+  { q: '2. Tom ___ a doctor. He is a scientist.', opts: ["I'm not", "isn't", "aren't"], a: "isn't" },
+  { q: '3. They ___ nurses. They are students.', opts: ["I'm not", "isn't", "aren't"], a: "aren't" },
+  { q: '4. Sophia ___ a waiter. She is a manager.', opts: ["I'm not", "isn't", "aren't"], a: "isn't" },
+  { q: '5. We ___ from Spain.', opts: ["I'm not", "isn't", "aren't"], a: "aren't" }
+], 'n');
+
+// 4. Grammar Questions & Short Answers (5 items)
+renderQuiz('qQuiz', [
+  { q: '1. ___ you a student?', opts: ['Am', 'Is', 'Are'], a: 'Are' },
+  { q: '2. ___ Mia from Chicago?', opts: ['Am', 'Is', 'Are'], a: 'Is' },
+  { q: '3. Is he a pilot? — Yes, ___.', opts: ["he's", 'he is', 'he are'], a: 'he is' },
+  { q: '4. Are they teachers? — No, ___.', opts: ["they isn't", "they aren't", "they're"], a: "they aren't" },
+  { q: '5. ___ is her job? — She is a designer.', opts: ['Where', 'Who', 'What'], a: 'What' }
+], 'g');
+
+// 5. Reading True/False (4 items)
+renderQuiz('readQuiz', [
+  { q: '1. Mia is at a café in Chicago.', opts: ['True', 'False'], a: 'True' },
+  { q: '2. Ben is a waiter.', opts: ['True', 'False'], a: 'False' },
+  { q: '3. Clara is from Spain.', opts: ['True', 'False'], a: 'True' },
+  { q: '4. Clara is a scientist.', opts: ['True', 'False'], a: 'True' }
+], 'r');
+
+function finishHomework() {
+  document.getElementById('hwStamp').classList.add('show');
+  const colors = ['#5C1E2E', '#B8873A', '#3D6B52', '#E3C377'];
+  for (let i = 0; i < 45; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.top = '-10px';
+    c.style.background = colors[i % colors.length];
+    c.style.animationDelay = (Math.random() * 0.6) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2200);
+  }
+}
+
+showStep(1);
+</script>
+</body>
+</html>
